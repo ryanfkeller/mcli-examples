@@ -7,7 +7,12 @@
 
 class ArduinoSerialIo : public mcli::CliIoInterface {
     public:
-        ArduinoSerialIo(Stream& stream = Serial) : stream_(stream) {}
+        ArduinoSerialIo(HardwareSerial& stream = Serial) : stream_(stream) {
+            stream.begin(9600);
+            while (!Serial) {
+                ; // Wait for serial port to connect (needed for Leonardo/Micro)
+            }
+        }
 
         // Required abstract methods from CliIoInterface
         void put_byte(char c) override {

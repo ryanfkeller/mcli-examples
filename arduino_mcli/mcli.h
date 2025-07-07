@@ -189,7 +189,7 @@ namespace mcli {
              * Print available commands
              */
             void print_help();
-        
+            
         private:
             // Parse command line into argc/argv format
             CommandArgs parse_command_line(const char* input);
@@ -227,7 +227,7 @@ namespace mcli {
 
     template<typename ContextType>
     void CliEngine<ContextType>::process_input() {
-        if (!io_.byte_available()) return;
+        io_.send_prompt(prompt_);
         CommandArgs args = get_command_input();
         if (args.argc > 0) {
             if (!dispatch_command(args)) {
@@ -269,8 +269,6 @@ namespace mcli {
         char* buffer_ptr = input_buffer_;
         size_t char_count = 0;
         uint8_t in_char = 0;
-
-        io_.send_prompt(prompt_);
 
         while (true) {
             in_char = io_.get_byte();
