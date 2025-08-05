@@ -4,3 +4,18 @@
 
 .DS_Store
 **/.DS_Store
+
+# Arduino Project Ignores
+arduino_serial_mcli/build
+
+# ESP Project Ignores
+sdkconfig
+sdkconfig.old
+
+esp_wifi_sta_mcli/main/config.h
+esp_wifi_sta_mcli/build
+esp_uart_mcli/build
+
+
+
+
