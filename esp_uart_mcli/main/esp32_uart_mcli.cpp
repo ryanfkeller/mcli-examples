@@ -48,8 +48,13 @@ extern "C" void app_main(void)
     
     // Send welcome message
     uart_io.println();
-    uart_io.println("=== ESP32 UART CLI ===");
-    uart_io.println("Type 'help' for available commands");
+    uart_io.println("███╗   ███╗ ██████╗ ██╗    ██████╗");
+    uart_io.println("████╗ ████║██╔═══██╗██║    ╚═██╔═╝");
+    uart_io.println("██╔████╔██║██║   ╚═╝██║      ██║  ");
+    uart_io.println("██║╚██╔╝██║██║   ██╗██║      ██║  ");
+    uart_io.println("██║ ╚═╝ ██║╚██████╔╝██████╗██████╗");
+    uart_io.println("╚═╝     ╚═╝ ╚═════╝ ╚═════╝╚═════╝");
+    uart_io.println("    === ESP32 UART Example ===    ");
     uart_io.println();
     
     // Run CLI in infinite loop

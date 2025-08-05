@@ -57,7 +57,13 @@ extern "C" void app_main(void)
         mcli::CliEngine<MyAppContext> cli(wifi_io, ctx, app_commands);
         
         // Send welcome message
-        wifi_io.println("=== ESP32 WiFi CLI ===");
+        wifi_io.println("███╗   ███╗ ██████╗ ██╗    ██████╗");
+        wifi_io.println("████╗ ████║██╔═══██╗██║    ╚═██╔═╝");
+        wifi_io.println("██╔████╔██║██║   ╚═╝██║      ██║  ");
+        wifi_io.println("██║╚██╔╝██║██║   ██╗██║      ██║  ");
+        wifi_io.println("██║ ╚═╝ ██║╚██████╔╝██████╗██████╗");
+        wifi_io.println("╚═╝     ╚═╝ ╚═════╝ ╚═════╝╚═════╝");
+        wifi_io.println("    === ESP32 WiFi Example ===    ");
         wifi_io.println("Type 'help' for available commands");
         wifi_io.println();
         
