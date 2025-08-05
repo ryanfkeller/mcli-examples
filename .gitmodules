@@ -1,0 +1,3 @@
+[submodule "libs/mcli"]
+	path = libs/mcli
+	url = https://github.com/ryanfkeller/mcli.git
