@@ -1,0 +1,6 @@
+#pragma once
+
+// Copy this file to config.h and fill in your actual values
+#define WIFI_SSID "your_wifi_name_here"
+#define WIFI_PASSWORD "your_wifi_password_here"
+#define WIFI_PORT 23
