@@ -9,18 +9,16 @@
 // Application context
 struct MyAppContext {
     ESP32WiFiIo& io;
-    int client_socket;
     uint32_t session_start_time;
     MyAppContext(ESP32WiFiIo& io) :
-        io(io),
-        client_socket(io.get_client_socket()) {
+        io(io) {
         session_start_time = esp_log_timestamp();
     }
 };
 
 // Implemented commands
 void cmd_hello(const mcli::CommandArgs args, MyAppContext* ctx) {
-    ctx->io.printf("Hello from client socket %d!\r\n", ctx->client_socket);
+    ctx->io.printf("Hello from client socket %d!\r\n", ctx->io.get_client_socket());
 }
 
 void cmd_status(const mcli::CommandArgs args, MyAppContext* ctx) {
@@ -41,9 +39,14 @@ const mcli::CommandDefinition<MyAppContext> app_commands[] = {
 
 extern "C" void app_main(void)
 {
+    // Create WiFi I/O adapter
+    ESP32WiFiIo wifi_io(WIFI_SSID, WIFI_PASSWORD, 23);
+
+    // Create context and CLI engine
+    MyAppContext ctx(wifi_io);
+    mcli::CliEngine<MyAppContext> cli(wifi_io, ctx, app_commands);
+
     while (1) {
-        // Create WiFi I/O adapter
-        ESP32WiFiIo wifi_io(WIFI_SSID, WIFI_PASSWORD, 23);
         
         // Wait for a client to connect (blocks until someone connects)
         if (!wifi_io.wait_for_client()) {
@@ -52,10 +55,17 @@ extern "C" void app_main(void)
             continue;
         }
         
-        // Create context and CLI engine
-        MyAppContext ctx(wifi_io);
-        mcli::CliEngine<MyAppContext> cli(wifi_io, ctx, app_commands);
+        ESP_LOGI("main", "Client connected, waiting 1 second before sending data...");
+        vTaskDelay(pdMS_TO_TICKS(1000)); // Wait 1 second
         
+        if (!wifi_io.is_connected()) {
+            ESP_LOGE("main", "Connection lost during 1 second wait");
+            continue;
+        }
+
+        // Reset CLI state for new connection
+        cli.reset_session();
+
         // Send welcome message
         wifi_io.println("███╗   ███╗ ██████╗ ██╗    ██████╗");
         wifi_io.println("████╗ ████║██╔═══██╗██║    ╚═██╔═╝");
@@ -74,6 +84,7 @@ extern "C" void app_main(void)
         }
         
         ESP_LOGI("main", "Client disconnected, waiting for next client...");
+        vTaskDelay(pdMS_TO_TICKS(1000));
         // Loop back to wait for next client
     }
 }
